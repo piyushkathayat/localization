@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Dropdown, Menu } from 'semantic-ui-react';
+import { Button, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import LocaleDropdown from '../containers/LocaleDropdown';
 
 export default class AppMenu extends Component {
     state = { activeItem: 'home' }
@@ -9,13 +10,6 @@ export default class AppMenu extends Component {
         this.setState({ activeItem: name });
     }
 
-    onDropdownChange = (e, { value }) => { console.log("dropdown clicked :", value) };
-    options = [
-        { text: 'Deutsch', value: 'de' },
-        { text: 'Italien', value: 'it' },
-        { text: 'French', value: 'fn' },
-        { text: 'English', value: 'en' },
-    ]
     render() {
         const { activeItem } = this.state
         return (
@@ -45,11 +39,7 @@ export default class AppMenu extends Component {
                 />
 
                 <Menu.Menu position='right'>
-                    <Dropdown item text='Language'
-                        onChange={this.onDropdownChange}
-                        options={this.options}>
-                    </Dropdown>
-
+                    <LocaleDropdown />
                     <Menu.Item>
                         <Button primary>Sign Up</Button>
                     </Menu.Item>
