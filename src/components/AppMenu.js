@@ -15,7 +15,7 @@ export default class AppMenu extends Component {
         return (
             <Menu size='small'>
                 <Menu.Item as={Link} to="/"
-                    name='home'
+                    name="Home"
                     active={activeItem === 'home'}
                     onClick={this.handleItemClick}
                 />

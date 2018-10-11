@@ -2,33 +2,27 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import locale from './reducers';
+import { createStore, applyMiddleware } from 'redux';
+import reducers from './reducers';
 import { BrowserRouter } from 'react-router-dom';
-import { IntlProvider, addLocaleData } from 'react-intl';
 
-import deLocaleData from 'react-intl/locale-data/de';
-import itLocaleData from 'react-intl/locale-data/it';
-import frLocaleData from 'react-intl/locale-data/fr';
-import enLocaleData from 'react-intl/locale-data/en';
+import createSagaMiddleware from 'redux-saga';
+import IntlWrapper from '../src/containers/IntlWrapper';
 
-addLocaleData([
-    ...deLocaleData,
-    ...itLocaleData,
-    ...frLocaleData,
-    ...enLocaleData
-]);
+const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(locale);
-const selectedLocale = "en";
-const messages = "message";
+const store = createStore(
+    reducers,
+    applyMiddleware(sagaMiddleware),
+);
+
 ReactDom.render(
     <Provider store={store}>
-        <IntlProvider locale={selectedLocale} messages={messages}>
+        <IntlWrapper>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
-        </IntlProvider>
+        </IntlWrapper>
     </Provider >,
     document.getElementById('root')
 );

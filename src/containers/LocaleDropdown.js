@@ -1,38 +1,39 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { locales } from '../utils/enums/locale';
 import { switchLocale } from '../actions/Actions';
-import { getSelectedLanguage } from '../utils/Common';
+import { getSelectedLanguage } from '../utils/common';
 
 class LocaleDropdown extends Component {
     state = {
         selectedLanguage: getSelectedLanguage()
     }
     onDropdownChange = (e, { value }) => {
+        const { switchLanguage } = this.props;
         if (this.state.selectedLanguage !== value) {
             sessionStorage.setItem("selectedLanguage", value);
             this.setState({ selectedLanguage: value })
-            // this.props.switchLocale(value)
+            switchLanguage(value)
+            window.location.reload();
         }
     };
-    options = [
-        { text: 'English', value: 'en' },
-        { text: 'Deutsch', value: 'de' },
-        { text: 'Italien', value: 'it' },
-        { text: 'French', value: 'fn' }
-    ]
+
     render() {
         return (
             <Dropdown item text={this.state.selectedLanguage}
                 value={this.state.selectedLanguage}
                 onChange={this.onDropdownChange}
-                options={this.options} >
+                options={locales} >
             </Dropdown>
         )
     }
 }
 
-export const mapDispatchToProps = () => ({
-    // switchLocale: locale => { dispatchEvent(switchLocale(locale)) }
+const mapDispatchToProps = dispatch => ({
+    switchLanguage: (locale) => {
+        dispatch(switchLocale(locale))
+    }
 })
+
 export default connect(state => state, mapDispatchToProps)(LocaleDropdown);
