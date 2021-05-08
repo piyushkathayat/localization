@@ -2,17 +2,27 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import locale from './reducers';
+import { createStore, applyMiddleware } from 'redux';
+import reducers from './reducers';
 import { BrowserRouter } from 'react-router-dom';
 
-const store = createStore(locale);
+import createSagaMiddleware from 'redux-saga';
+import IntlWrapper from '../src/containers/IntlWrapper';
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+    reducers,
+    applyMiddleware(sagaMiddleware),
+);
 
 ReactDom.render(
     <Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    </Provider>,
+        <IntlWrapper>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </IntlWrapper>
+    </Provider >,
     document.getElementById('root')
 );
